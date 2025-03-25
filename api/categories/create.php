@@ -15,17 +15,18 @@ $db = $database->getConnection();
 $category = new Category($db);
 $data = json_decode(file_get_contents("php://input"));
 
-if (!empty($data->category)) {
-    $category->category = $data->category;
-    if ($category->create()) {
-        http_response_code(201);
-        echo json_encode(array("message" => "Category was created.", "id" => $category->id, "category" => $category->category)); //added id and category
-    } else {
-        http_response_code(503);
-        echo json_encode(array("message" => "Unable to create category."));
-    }
-} else {
+if (empty($data->category)) {
     http_response_code(400);
-    echo json_encode(array("message" => "Unable to create category. Data is incomplete."));
+    echo json_encode(array("message" => "Missing Required Parameters")); // Corrected Message
+    exit;
+}
+
+$category->category = $data->category;
+if ($category->create()) {
+    http_response_code(201);
+    echo json_encode(array("message" => "Category was created.", "id" => $category->id, "category" => $category->category));
+} else {
+    http_response_code(503);
+    echo json_encode(array("message" => "Unable to create category."));
 }
 ?>

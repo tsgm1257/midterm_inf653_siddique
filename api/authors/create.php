@@ -15,17 +15,18 @@ $db = $database->getConnection();
 $author = new Author($db);
 $data = json_decode(file_get_contents("php://input"));
 
-if (!empty($data->author)) {
-    $author->author = $data->author;
-    if ($author->create()) {
-        http_response_code(201);
-        echo json_encode(array("message" => "Author was created.", "id" => $author->id, "author" => $author->author)); //added id and author
-    } else {
-        http_response_code(503);
-        echo json_encode(array("message" => "Unable to create author."));
-    }
-} else {
+if (empty($data->author)) {
     http_response_code(400);
-    echo json_encode(array("message" => "Unable to create author. Data is incomplete."));
+    echo json_encode(array("message" => "Missing Required Parameters")); // Corrected Message
+    exit;
+}
+
+$author->author = $data->author;
+if ($author->create()) {
+    http_response_code(201);
+    echo json_encode(array("message" => "Author was created.", "id" => $author->id, "author" => $author->author));
+} else {
+    http_response_code(503);
+    echo json_encode(array("message" => "Unable to create author."));
 }
 ?>
