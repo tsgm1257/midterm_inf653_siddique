@@ -16,7 +16,7 @@ $num = $stmt->rowCount();
 
 if ($num > 0) {
     $quotes_arr = array();
-    $quotes_arr["records"] = array();
+    $quotes_arr["quotes"] = array();
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         extract($row);
         $quote_item = array(
@@ -25,7 +25,7 @@ if ($num > 0) {
             "author" => $author,
             "category" => $category
         );
-        array_push($quotes_arr["records"], $quote_item);
+        array_push($quotes_arr["quotes"], $quote_item);
     }
     http_response_code(200);
     echo json_encode($quotes_arr);
