@@ -11,13 +11,16 @@ $db = $database->getConnection();
 
 $quote = new Quote($db);
 
-$stmt = $quote->read();
-$num = $stmt->rowCount();
+$id = isset($_GET['id']) ? $_GET['id'] : null;
+$author_id = isset($_GET['author_id']) ? $_GET['author_id'] : null;
+$category_id = isset($_GET['category_id']) ? $_GET['category_id'] : null;
 
-if ($num > 0) {
-    $quotes_arr = array();
-    $quotes_arr["quotes"] = array();
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+if ($id) {
+    $stmt = $quote->readOne($id);
+    $num = $stmt->rowCount();
+
+    if ($num > 0) {
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
         extract($row);
         $quote_item = array(
             "id" => $id,
@@ -25,12 +28,96 @@ if ($num > 0) {
             "author" => $author,
             "category" => $category
         );
-        array_push($quotes_arr["quotes"], $quote_item);
+        http_response_code(200);
+        echo json_encode($quote_item);
+    } else {
+        http_response_code(404);
+        echo json_encode(array("message" => "No Quotes Found"));
     }
-    http_response_code(200);
-    echo json_encode($quotes_arr);
+} elseif ($author_id && $category_id) {
+    $stmt = $quote->readByAuthorAndCategory($author_id, $category_id);
+    $num = $stmt->rowCount();
+    if ($num > 0) {
+        $quotes_arr = array();
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            extract($row);
+            $quote_item = array(
+                "id" => $id,
+                "quote" => $quote,
+                "author" => $author,
+                "category" => $category
+            );
+            array_push($quotes_arr, $quote_item);
+        }
+        http_response_code(200);
+        echo json_encode($quotes_arr);
+    } else {
+        http_response_code(404);
+        echo json_encode(array("message" => "No quotes found."));
+    }
+} elseif ($author_id) {
+    $stmt = $quote->readByAuthor($author_id);
+    $num = $stmt->rowCount();
+    if ($num > 0) {
+        $quotes_arr = array();
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            extract($row);
+            $quote_item = array(
+                "id" => $id,
+                "quote" => $quote,
+                "author" => $author,
+                "category" => $category
+            );
+            array_push($quotes_arr, $quote_item);
+        }
+        http_response_code(200);
+        echo json_encode($quotes_arr);
+    } else {
+        http_response_code(404);
+        echo json_encode(array("message" => "No quotes found."));
+    }
+} elseif ($category_id) {
+    $stmt = $quote->readByCategory($category_id);
+    $num = $stmt->rowCount();
+    if ($num > 0) {
+        $quotes_arr = array();
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            extract($row);
+            $quote_item = array(
+                "id" => $id,
+                "quote" => $quote,
+                "author" => $author,
+                "category" => $category
+            );
+            array_push($quotes_arr, $quote_item);
+        }
+        http_response_code(200);
+        echo json_encode($quotes_arr);
+    } else {
+        http_response_code(404);
+        echo json_encode(array("message" => "No quotes found."));
+    }
 } else {
-    http_response_code(404);
-    echo json_encode(array("message" => "No quotes found."));
+    $stmt = $quote->read();
+    $num = $stmt->rowCount();
+
+    if ($num > 0) {
+        $quotes_arr = array();
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            extract($row);
+            $quote_item = array(
+                "id" => $id,
+                "quote" => $quote,
+                "author" => $author,
+                "category" => $category
+            );
+            array_push($quotes_arr, $quote_item);
+        }
+        http_response_code(200);
+        echo json_encode($quotes_arr);
+    } else {
+        http_response_code(404);
+        echo json_encode(array("message" => "No quotes found."));
+    }
 }
 ?>
