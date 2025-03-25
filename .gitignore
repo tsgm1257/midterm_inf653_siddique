@@ -1,0 +1,7 @@
+.htaccess
+/vendor/
+/node_modules/
+*.log
+*.sql
+*.sqlite
+.env
