@@ -19,7 +19,7 @@ $author->id = $data->id;
 
 if ($author->delete()) {
     http_response_code(200);
-    echo json_encode(array("message" => "Author was deleted."));
+    echo json_encode(array("id" => $author->id));
 } else {
     http_response_code(503);
     echo json_encode(array("message" => "Unable to delete author."));

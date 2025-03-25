@@ -19,7 +19,7 @@ $category->id = $data->id;
 
 if ($category->delete()) {
     http_response_code(200);
-    echo json_encode(array("message" => "Category was deleted."));
+    echo json_encode(array("id" => $category->id));
 } else {
     http_response_code(503);
     echo json_encode(array("message" => "Unable to delete category."));

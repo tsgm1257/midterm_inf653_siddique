@@ -24,7 +24,7 @@ if (!empty($data->id) && !empty($data->quote) && !empty($data->author_id) && !em
 
     if ($quote->update()) {
         http_response_code(200);
-        echo json_encode(array("message" => "Quote was updated.", "id" => $quote->id, "quote" => $quote->quote, "author_id" => $quote->author_id, "category_id" => $quote->category_id));
+        echo json_encode(array("id" => $quote->id, "quote" => $quote->quote, "author_id" => $quote->author_id, "category_id" => $quote->category_id));
     } else {
         http_response_code(500);
         echo json_encode(array("message" => "Unable to update quote."));
