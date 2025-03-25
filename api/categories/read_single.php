@@ -23,6 +23,6 @@ if ($category->category != null) {
     echo json_encode($category_arr);
 } else {
     http_response_code(404);
-    echo json_encode(array("message" => "Category not found."));
+    echo json_encode(array("message" => "category_id Not Found")); // changed message
 }
 ?>

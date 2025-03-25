@@ -26,7 +26,11 @@ class Category {
         $stmt->bindParam(1, $this->id);
         $stmt->execute();
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        $this->category = $row['category'];
+        if ($row) {
+            $this->category = $row['category'];
+        } else {
+            $this->category = null;
+        }
     }
 
     public function create() {
@@ -34,6 +38,7 @@ class Category {
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(":category", $this->category);
         if ($stmt->execute()) {
+            $this->id = $this->conn->lastInsertId(); // Get the last inserted ID
             return true;
         }
         return false;
@@ -63,3 +68,4 @@ class Category {
         return false;
     }
 }
+?>
