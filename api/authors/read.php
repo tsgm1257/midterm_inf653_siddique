@@ -16,17 +16,16 @@ $num = $stmt->rowCount();
 
 if ($num > 0) {
     $authors_arr = array();
-    $authors_arr["records"] = array();
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         extract($row);
         $author_item = array(
             "id" => $id,
             "author" => $author
         );
-        array_push($authors_arr["records"], $author_item);
+        array_push($authors_arr, $author_item); //changed to push directly to the array
     }
     http_response_code(200);
-    echo json_encode($authors_arr);
+    echo json_encode($authors_arr); //removed records index
 } else {
     http_response_code(404);
     echo json_encode(array("message" => "No authors found."));

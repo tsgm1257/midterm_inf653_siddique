@@ -23,6 +23,6 @@ if ($author->author != null) {
     echo json_encode($author_arr);
 } else {
     http_response_code(404);
-    echo json_encode(array("message" => "Author not found."));
+    echo json_encode(array("message" => "author_id Not Found")); //changed message
 }
 ?>

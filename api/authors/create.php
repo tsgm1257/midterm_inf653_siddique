@@ -19,7 +19,7 @@ if (!empty($data->author)) {
     $author->author = $data->author;
     if ($author->create()) {
         http_response_code(201);
-        echo json_encode(array("message" => "Author was created."));
+        echo json_encode(array("message" => "Author was created.", "id" => $author->id, "author" => $author->author)); //added id and author
     } else {
         http_response_code(503);
         echo json_encode(array("message" => "Unable to create author."));

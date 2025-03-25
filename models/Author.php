@@ -26,7 +26,11 @@ class Author {
         $stmt->bindParam(1, $this->id);
         $stmt->execute();
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        $this->author = $row['author'];
+        if ($row) {
+            $this->author = $row['author'];
+        } else {
+            $this->author = null;
+        }
     }
 
     public function create() {
@@ -34,6 +38,7 @@ class Author {
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(":author", $this->author);
         if ($stmt->execute()) {
+            $this->id = $this->conn->lastInsertId(); // Get the last inserted ID
             return true;
         }
         return false;
@@ -63,3 +68,5 @@ class Author {
         return false;
     }
 }
+
+?>
