@@ -21,7 +21,7 @@ class Author {
     }
 
     public function readSingle() {
-        $query = "SELECT id, author FROM " . $this->table_name . " WHERE id = ? LIMIT 0,1";
+        $query = "SELECT id, author FROM " . $this->table_name . " WHERE id = ? LIMIT 1 OFFSET 0";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(1, $this->id);
         $stmt->execute();

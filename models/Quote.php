@@ -25,21 +25,21 @@ class Quote {
     }
 
     public function readSingle() {
-        $query = "SELECT q.id, q.quote, a.author, c.category FROM " . $this->table_name . " q JOIN authors a ON q.author_id = a.id JOIN categories c ON q.category_id = c.id WHERE q.id = ? LIMIT 0,1";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(1, $this->id);
-        $stmt->execute();
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        if ($row) {
-            $this->quote = $row['quote'];
-            $this->author = $row['author'];
-            $this->category = $row['category'];
-        } else {
-            $this->quote = null;
-            $this->author = null;
-            $this->category = null;
-        }
+    $query = "SELECT q.id, q.quote, a.author, c.category FROM " . $this->table_name . " q JOIN authors a ON q.author_id = a.id JOIN categories c ON q.category_id = c.id WHERE q.id = ? LIMIT 1 OFFSET 0"; // Modified line
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(1, $this->id);
+    $stmt->execute();
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($row) {
+        $this->quote = $row['quote'];
+        $this->author = $row['author'];
+        $this->category = $row['category'];
+    } else {
+        $this->quote = null;
+        $this->author = null;
+        $this->category = null;
     }
+}
 
     public function create() {
         $query = "INSERT INTO " . $this->table_name . " (quote, author_id, category_id) VALUES (:quote, :author_id, :category_id)";
