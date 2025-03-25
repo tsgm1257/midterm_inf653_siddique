@@ -24,7 +24,7 @@ if (empty($data->category)) {
 $category->category = $data->category;
 if ($category->create()) {
     http_response_code(201);
-    echo json_encode(array("message" => "Category was created.", "id" => $category->id, "category" => $category->category));
+    echo json_encode(array("id" => $category->id, "category" => $category->category));
 } else {
     http_response_code(503);
     echo json_encode(array("message" => "Unable to create category."));

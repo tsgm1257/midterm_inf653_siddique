@@ -49,7 +49,7 @@ $quote->category_id = $data->category_id;
 
 if ($quote->create()) {
     http_response_code(201);
-    echo json_encode(array("message" => "Quote was created.", "id" => $quote->id, "quote" => $quote->quote, "author_id" => $quote->author_id, "category_id" => $quote->category_id));
+    echo json_encode(array("id" => $quote->id, "quote" => $quote->quote, "author_id" => $quote->author_id, "category_id" => $quote->category_id)); //removed message.
 } else {
     http_response_code(503);
     echo json_encode(array("message" => "Unable to create quote."));
