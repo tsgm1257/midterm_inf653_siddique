@@ -21,10 +21,8 @@ if ($quote->quote != null) {
         "author" => $quote->author,
         "category" => $quote->category
     );
-    http_response_code(200);
     echo json_encode($quote_arr);
 } else {
-    http_response_code(404);
     echo json_encode(array("message" => "Quote not found."));
 }
 ?>

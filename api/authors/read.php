@@ -22,12 +22,10 @@ if ($num > 0) {
             "id" => $id,
             "author" => $author
         );
-        array_push($authors_arr, $author_item); //changed to push directly to the array
+        array_push($authors_arr, $author_item);
     }
-    http_response_code(200);
-    echo json_encode($authors_arr); //removed records index
+    echo json_encode($authors_arr);
 } else {
-    http_response_code(404);
     echo json_encode(array("message" => "No authors found."));
 }
 ?>

@@ -23,17 +23,13 @@ if (!empty($data->id) && !empty($data->quote) && !empty($data->author_id) && !em
     $quote->category_id = $data->category_id;
 
     if ($quote->update()) {
-        http_response_code(200);
         echo json_encode(array("id" => $quote->id, "quote" => $quote->quote, "author_id" => $quote->author_id, "category_id" => $quote->category_id));
     } else {
-        http_response_code(500);
         echo json_encode(array("message" => "Unable to update quote."));
     }
 } elseif (!empty($data->id) && empty($quote->readOne($data->id)->rowCount())) {
-    http_response_code(404);
     echo json_encode(array("message" => "No Quotes Found"));
 } else {
-    http_response_code(400);
     echo json_encode(array("message" => "Missing Required Parameters"));
 }
 ?>

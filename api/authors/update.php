@@ -19,10 +19,8 @@ $author->id = $data->id;
 $author->author = $data->author;
 
 if ($author->update()) {
-    http_response_code(200);
     echo json_encode(array("id" => $author->id, "author" => $author->author)); //added id and author
 } else {
-    http_response_code(503);
     echo json_encode(array("message" => "Unable to update author."));
 }
 ?>

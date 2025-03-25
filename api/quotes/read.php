@@ -28,10 +28,8 @@ if ($id) {
             "author" => $author,
             "category" => $category
         );
-        http_response_code(200);
         echo json_encode($quote_item);
     } else {
-        http_response_code(404);
         echo json_encode(array("message" => "No Quotes Found"));
     }
 } elseif ($author_id && $category_id) {
@@ -49,10 +47,8 @@ if ($id) {
             );
             array_push($quotes_arr, $quote_item);
         }
-        http_response_code(200);
         echo json_encode($quotes_arr);
     } else {
-        http_response_code(404);
         echo json_encode(array("message" => "No quotes found."));
     }
 } elseif ($author_id) {
@@ -70,10 +66,8 @@ if ($id) {
             );
             array_push($quotes_arr, $quote_item);
         }
-        http_response_code(200);
         echo json_encode($quotes_arr);
     } else {
-        http_response_code(404);
         echo json_encode(array("message" => "No quotes found."));
     }
 } elseif ($category_id) {
@@ -91,10 +85,8 @@ if ($id) {
             );
             array_push($quotes_arr, $quote_item);
         }
-        http_response_code(200);
         echo json_encode($quotes_arr);
     } else {
-        http_response_code(404);
         echo json_encode(array("message" => "No quotes found."));
     }
 } else {
@@ -113,10 +105,8 @@ if ($id) {
             );
             array_push($quotes_arr, $quote_item);
         }
-        http_response_code(200);
         echo json_encode($quotes_arr);
     } else {
-        http_response_code(404);
         echo json_encode(array("message" => "No quotes found."));
     }
 }

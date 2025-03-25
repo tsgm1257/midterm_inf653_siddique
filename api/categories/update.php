@@ -19,10 +19,8 @@ $category->id = $data->id;
 $category->category = $data->category;
 
 if ($category->update()) {
-    http_response_code(200);
     echo json_encode(array("id" => $category->id, "category" => $category->category)); // added id and category
 } else {
-    http_response_code(503);
     echo json_encode(array("message" => "Unable to update category."));
 }
 ?>

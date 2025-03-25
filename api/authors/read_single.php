@@ -19,10 +19,8 @@ if ($author->author != null) {
         "id" => $author->id,
         "author" => $author->author
     );
-    http_response_code(200);
     echo json_encode($author_arr);
 } else {
-    http_response_code(404);
-    echo json_encode(array("message" => "author_id Not Found")); //changed message
+    echo json_encode(array("message" => "author_id Not Found"));
 }
 ?>
