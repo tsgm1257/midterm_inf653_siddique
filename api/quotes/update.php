@@ -8,28 +8,55 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 include_once '../../config/Database.php';
 include_once '../../models/Quote.php';
+include_once '../../models/Author.php';
+include_once '../../models/Category.php';
 
 $database = new Database();
 $db = $database->getConnection();
 
 $quote = new Quote($db);
+$author_check = new Author($db);
+$category_check = new Category($db);
 
 $data = json_decode(file_get_contents("php://input"));
 
-if (!empty($data->id) && !empty($data->quote) && !empty($data->author_id) && !empty($data->category_id)) {
-    $quote->id = $data->id;
-    $quote->quote = $data->quote;
-    $quote->author_id = $data->author_id;
-    $quote->category_id = $data->category_id;
-
-    if ($quote->update()) {
-        echo json_encode(array("id" => $quote->id, "quote" => $quote->quote, "author_id" => $quote->author_id, "category_id" => $quote->category_id));
-    } else {
-        echo json_encode(array("message" => "Unable to update quote."));
-    }
-} elseif (!empty($data->id) && empty($quote->readOne($data->id)->rowCount())) {
-    echo json_encode(array("message" => "No Quotes Found"));
-} else {
+if (empty($data->id) || empty($data->quote) || empty($data->author_id) || empty($data->category_id)) {
     echo json_encode(array("message" => "Missing Required Parameters"));
+    exit;
 }
+
+$quote->id = $data->id;
+$quote->readSingle();
+
+if($quote->quote == null){
+    echo json_encode(array("message" => "No Quotes Found"));
+    exit;
+}
+
+$author_check->id = $data->author_id;
+$author_check->readSingle();
+
+if ($author_check->author == null) {
+    echo json_encode(array("message" => "author_id Not Found"));
+    exit;
+}
+
+$category_check->id = $data->category_id;
+$category_check->readSingle();
+
+if ($category_check->category == null) {
+    echo json_encode(array("message" => "category_id Not Found"));
+    exit;
+}
+
+$quote->quote = $data->quote;
+$quote->author_id = $data->author_id;
+$quote->category_id = $data->category_id;
+
+if ($quote->update()) {
+    echo json_encode(array("id" => $quote->id, "quote" => $quote->quote, "author_id" => $quote->author_id, "category_id" => $quote->category_id));
+} else {
+    echo json_encode(array("message" => "Unable to update quote."));
+}
+
 ?>

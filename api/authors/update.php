@@ -15,11 +15,16 @@ $db = $database->getConnection();
 $author = new Author($db);
 $data = json_decode(file_get_contents("php://input"));
 
+if (empty($data->id) || empty($data->author)) {
+    echo json_encode(array("message" => "Missing Required Parameters"));
+    exit;
+}
+
 $author->id = $data->id;
 $author->author = $data->author;
 
 if ($author->update()) {
-    echo json_encode(array("id" => $author->id, "author" => $author->author)); //added id and author
+    echo json_encode(array("id" => $author->id, "author" => $author->author));
 } else {
     echo json_encode(array("message" => "Unable to update author."));
 }

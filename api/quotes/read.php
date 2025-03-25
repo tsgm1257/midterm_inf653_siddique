@@ -49,7 +49,7 @@ if ($id) {
         }
         echo json_encode($quotes_arr);
     } else {
-        echo json_encode(array("message" => "No quotes found."));
+        echo json_encode(array("message" => "No Quotes Found"));
     }
 } elseif ($author_id) {
     $stmt = $quote->readByAuthor($author_id);
@@ -68,7 +68,7 @@ if ($id) {
         }
         echo json_encode($quotes_arr);
     } else {
-        echo json_encode(array("message" => "No quotes found."));
+        echo json_encode(array("message" => "No Quotes Found"));
     }
 } elseif ($category_id) {
     $stmt = $quote->readByCategory($category_id);
@@ -87,7 +87,7 @@ if ($id) {
         }
         echo json_encode($quotes_arr);
     } else {
-        echo json_encode(array("message" => "No quotes found."));
+        echo json_encode(array("message" => "No Quotes Found"));
     }
 } else {
     $stmt = $quote->read();
@@ -107,7 +107,7 @@ if ($id) {
         }
         echo json_encode($quotes_arr);
     } else {
-        echo json_encode(array("message" => "No quotes found."));
+        echo json_encode(array("message" => "No Quotes Found"));
     }
 }
 ?>

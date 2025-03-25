@@ -15,11 +15,16 @@ $db = $database->getConnection();
 $category = new Category($db);
 $data = json_decode(file_get_contents("php://input"));
 
+if (empty($data->id) || empty($data->category)) {
+    echo json_encode(array("message" => "Missing Required Parameters"));
+    exit;
+}
+
 $category->id = $data->id;
 $category->category = $data->category;
 
 if ($category->update()) {
-    echo json_encode(array("id" => $category->id, "category" => $category->category)); // added id and category
+    echo json_encode(array("id" => $category->id, "category" => $category->category));
 } else {
     echo json_encode(array("message" => "Unable to update category."));
 }
