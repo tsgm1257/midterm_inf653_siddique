@@ -30,9 +30,15 @@ class Quote {
         $stmt->bindParam(1, $this->id);
         $stmt->execute();
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        $this->quote = $row['quote'];
-        $this->author = $row['author'];
-        $this->category = $row['category'];
+        if ($row) {
+            $this->quote = $row['quote'];
+            $this->author = $row['author'];
+            $this->category = $row['category'];
+        } else {
+            $this->quote = null;
+            $this->author = null;
+            $this->category = null;
+        }
     }
 
     public function create() {
@@ -42,6 +48,7 @@ class Quote {
         $stmt->bindParam(":author_id", $this->author_id);
         $stmt->bindParam(":category_id", $this->category_id);
         if ($stmt->execute()) {
+            $this->id = $this->conn->lastInsertId(); // Retrieve the last inserted ID
             return true;
         }
         return false;
@@ -72,4 +79,38 @@ class Quote {
 
         return false;
     }
+    
+    public function readByAuthor($author_id) {
+        $query = "SELECT q.id, q.quote, a.author, c.category FROM " . $this->table_name . " q JOIN authors a ON q.author_id = a.id JOIN categories c ON q.category_id = c.id WHERE q.author_id = ?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(1, $author_id);
+        $stmt->execute();
+        return $stmt;
+    }
+    
+    public function readByCategory($category_id) {
+        $query = "SELECT q.id, q.quote, a.author, c.category FROM " . $this->table_name . " q JOIN authors a ON q.author_id = a.id JOIN categories c ON q.category_id = c.id WHERE q.category_id = ?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(1, $category_id);
+        $stmt->execute();
+        return $stmt;
+    }
+    
+    public function readByAuthorAndCategory($author_id, $category_id) {
+        $query = "SELECT q.id, q.quote, a.author, c.category FROM " . $this->table_name . " q JOIN authors a ON q.author_id = a.id JOIN categories c ON q.category_id = c.id WHERE q.author_id = ? AND q.category_id = ?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(1, $author_id);
+        $stmt->bindParam(2, $category_id);
+        $stmt->execute();
+        return $stmt;
+    }
+    
+    public function readOne($id){
+        $query = "SELECT q.id, q.quote, a.author, c.category FROM " . $this->table_name . " q JOIN authors a ON q.author_id = a.id JOIN categories c ON q.category_id = c.id WHERE q.id = ?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(1, $id);
+        $stmt->execute();
+        return $stmt;
+    }
 }
+?>
